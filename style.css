@@ -1,0 +1,21 @@
+#nav-bar  ,#sections{
+  background-color:rgb(47, 206, 126);
+  color: black;
+}
+#search-button {
+  color: black;
+  background-color:rgb(226, 230, 17);
+}
+#search-for-recipe-input {
+  border: hidden;
+}
+#body {
+  background-color: powderblue;
+}
+#container {
+  background-color: pink;
+}
+#choice-image { width: 300px;
+  height: 300px;
+
+}
