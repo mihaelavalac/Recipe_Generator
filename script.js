@@ -11,6 +11,7 @@ $(".letter").click(function (event) {
   var letter = event.target.innerText.toLowerCase();
   // localStorage.setItem("userLetter", "letter");
   // console.log(letter);
+  $("#food-box").empty();
   generateCocktail(letter);
   generateFood(letter);
 });
@@ -54,18 +55,17 @@ function generateNumber(number) {
   return Math.floor(Math.random() *  number);
 }
 function generateIngredients() {
-  $("#ingredients").empty();
+  $("#ingredients-list").empty();
   for (var i =0; i<array.length; i++) {
     var recipeIngredients = $("<li>" + array[i] + "</li>");
-    $("#ingredients").append(recipeIngredients);
+    $("#ingredients-list").append(recipeIngredients);
   }
 }
 
 function generateSelectedSection (name, img, ingredients, instructions) {
-    return ` <h3 id= "choice-name">${name}</h3>
-    <img id= "choice-image" src="${img}">
-    <ul id="ingredients-list">Ingredients: ${ingredients}</ul>
-    <div id = "instructions">Cooking Instruction: ${instructions}</div>`
+    return ` <h2 id= "choice-name">${name}</h2>
+    <img id= "choice-image" src="${img}"><ul id="ingredients-list"><h5 class="name">Ingredients:</h5> ${ingredients}</ul>
+    <div id = "instructions"><h5 class="name">Cooking Instruction:</h5> ${instructions}</div>`
 }
 
 function generateCocktail(userLetter) {
