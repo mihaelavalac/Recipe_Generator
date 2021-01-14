@@ -1,22 +1,61 @@
-var html = " ";
-var c;
-for (var i = 65; 89 >= i; i++) {
-  // A-64, Z-90
-  if(String.fromCharCode(i) === "Q"){
-    continue;
+function generateLettersForFood() {
+  var html = " ";
+  var c;
+  for (var i = 65; 89 >= i; i++) {
+    // A-64, Z-90
+    if (
+      String.fromCharCode(i) === "Q" ||
+      String.fromCharCode(i) === "X" ||
+      String.fromCharCode(i) === "U"
+    ) {
+      continue;
+    }
+    c = String.fromCharCode(i);
+    html += "<button class='letter'>" + c + "</button> <br>";
   }
-  c = String.fromCharCode(i);
-  html += "<button class='letter'>" + c + "</button>";
+  document.getElementById("letters-area").innerHTML = html;
 }
-document.getElementById("box").innerHTML = html;
+function generateLettersForCocktails() {
+  var html = " ";
+  var c;
+  for (var i = 65; 89 >= i; i++) {
+    // A-64, Z-90
+    if (
+      String.fromCharCode(i) === "X" ||
+      String.fromCharCode(i) === "U"
+    ) {
+      continue;
+    }
+    c = String.fromCharCode(i);
+    html += "<button class='letter'>" + c + "</button>";
+  }
+  document.getElementById("letters-area").innerHTML = html;
+}
 
-$(".letter").click(function (event) {
-  var letter = event.target.innerText.toLowerCase();
-  // localStorage.setItem("userLetter", "letter");
-  // console.log(letter);
-  $("#food-box").empty();
-  generateCocktail(letter);
-  generateFood(letter);
+// $(".letter").click(function (event) {
+//   var letter = event.target.innerText.toLowerCase();
+//   $("#recipe-box").empty();
+//   generateFood(letter);
+// });
+
+$("#food-recipe").click(function () {
+  $("#recipe-box").empty();
+  generateLettersForFood();
+  $(".letter").click(function (event) {
+    var letter = event.target.innerText.toLowerCase();
+    $("#recipe-box").empty();
+    generateFood(letter);
+  });
+});
+
+$("#drink-recipe").click(function () {
+  $("#recipe-box").empty();
+  generateLettersForCocktails();
+  $(".letter").click(function (event) {
+    var letter = event.target.innerText.toLowerCase();
+    $("#recipe-box").empty();
+    generateCocktail(letter);
+  });
 });
 
 function generateFood(userLetter) {
@@ -29,20 +68,14 @@ function generateFood(userLetter) {
   }).then(function (data) {
     console.log(data);
     var randNumber = generateNumber(data.meals.length);
-    if (randNumber === null) {
-      console.log(randNumber);
-    }
     let generatedIngList = generateIngredientsHTML(data.meals[randNumber]);
-    console.log(data.meals[randNumber])
-    console.log(generatedIngList);
-    $("#ingredients-list").empty().append(generatedIngList);
-    //generateIngredients(list);
     var recipeInstruction = generateSelectedSection(
       data.meals[randNumber].strMeal,
       data.meals[randNumber].strMealThumb,
       data.meals[randNumber].strInstructions
     );
-    $("#food-box").append(recipeInstruction);
+    $("#recipe-box").append(recipeInstruction);
+    $("#ingredients-list").append(generatedIngList);
   });
 }
 function generateNumber(number) {
@@ -55,17 +88,14 @@ function generateIngredientsHTML(ingPath) {
     var ingredient = "strIngredient" + i;
     var measurement = "strMeasure" + i;
 
-    if (ingPath[ingredient] === "") {
+    if (ingPath[ingredient] === "" || ingPath[ingredient] === null) {
       break;
     }
     if (ingPath[measurement] === "") {
       ingPath[measurement] = "To taste";
     }
-    section = generateIngredientHTML(
-      ingPath[ingredient],
-      ingPath[measurement]
-    );
-    
+    section = generateIngredientHTML(ingPath[ingredient], ingPath[measurement]);
+
     allHTML += section;
   }
   return allHTML;
@@ -76,9 +106,18 @@ function generateIngredientHTML(ingredient, measurement) {
 }
 
 function generateSelectedSection(name, img, instructions) {
-  return ` <h2 id= "choice-name">${name}</h2>
-    <img id= "choice-image" src="${img}">
-    <div id = "instructions"><h5 class="name">Cooking Instruction:</h5> ${instructions}</div>`;
+  return `
+  <div id="recipe-title" class="column is-full is-centered">
+    <h2>${name}</h2>
+  </div>
+  <div class="columns is-mobile">
+    <div class="column" id="img-area"><img id= "recipe-image" src="${img}"></div>
+    <div class="column" id="ingredients">
+      <ul id= "ingredients-list"><h5 class ="cooking instruction"> Ingredients</h5><br>
+      </ul>
+    </div>
+  </div>
+  <div id="instructions" class="column-is-full"> <h5 class="cooking-instruction">Cooking Instruction:</h5> <br> ${instructions}</div>`;
 }
 
 function generateCocktail(userLetter) {
@@ -87,5 +126,16 @@ function generateCocktail(userLetter) {
   $.ajax({
     url: drinksUrl,
     method: "GET",
-  }).then(function (response) {});
+  }).then(function (obj) {
+    console.log(obj);
+    var randNumber = generateNumber(obj.drinks.length);
+    let generatedIngList = generateIngredientsHTML(obj.drinks[randNumber]);
+    var recipeInstruction = generateSelectedSection(
+      obj.drinks[randNumber].strDrink,
+      obj.drinks[randNumber].strDrinkThumb,
+      obj.drinks[randNumber].strInstructions
+    );
+    $("#recipe-box").append(recipeInstruction);
+    $("#ingredients-list").append(generatedIngList);
+  });
 }
