@@ -14,9 +14,9 @@ function generateLettersForFood() {
     c = String.fromCharCode(i);
     html += "<button class='button is-rounded letter'>" + c + "</button> <br>";
   }
-  var welcome= `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div>`
+  var welcome= `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`
   document.getElementById("letters-area").innerHTML = html;
-  $("welcome-area").append(welcome);
+  $("#welcome-area").append(welcome);
   
 
 }
@@ -102,23 +102,24 @@ function generateIngredientsHTML(ingPath) {
   return allHTML;
 }
 function generateIngredientHTML(ingredient, measurement) {
-  var recipeIngredients = "<li class='ingredients-list'>" + ingredient + " : " + measurement + "</li>";
+  var recipeIngredients = "<li class='ingredients-list is-centered'>" + ingredient + " : " + measurement + "</li>";
   return recipeIngredients;
 }
 
 function generateSelectedRecipe(name, img, instructions) {
   return `
-  <div id="recipe-title" class="columns is-centered is-full">
-    <h1>${name}</h1>
+  <div id="recipe-title" class="columns is-full is-centered">
+    <h1 >${name}</h1>
   </div>
   <div class="columns is-mobile">
-    <div class="column" id="img-area"><img src="${img}"></div>
-    <div class="column" id="ingredients">
-      <ul id= "ingredients-list"><h4 class ="cooking instruction" style="font-style:italic"> Ingredients</h4><br>
+    <div class="column is-4" id="img-area"><img src="${img}"></div>
+    <div class="column is-3 is-centered" id="ingredients">
+      <ul id= "ingredients-list" class="is-mobile ic-centered"><h4 class ="is-centered" style="font-style:italic"> Ingredients</h4><br>
       </ul>
     </div>
+    <div class="column is-mobile is-5" id="instructions"> <h4 class="cooking-instruction" style="font-style:italic"> Instruction </h4><br> ${instructions}</div>
   </div>
-  <div id="instructions" class="column-is-full"> <h4 class="cooking-instruction" style="font-style:italic"> Cooking Instruction:</h4> <br> ${instructions}</div><br><br><br><br>`;
+ `;
 }
 
 function generateCocktail(userLetter) {
@@ -140,3 +141,51 @@ function generateCocktail(userLetter) {
     $("#ingredients-list").append(generatedIngList);
   });
 }
+
+function generateRecipeByInput (input) {
+  var foodInputUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s=" + input;
+  var drinkInputUrl = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" +input;
+  $.ajax({
+    url: foodInputUrl,
+    method: "GET",
+  }).then(function (foodData) {
+    console.log(foodData);
+    $.ajax({
+      url: drinkInputUrl,
+      method: "GET"
+    }).then (function (inputResponse){
+      console.log(inputResponse);
+    }) 
+    var randNumber = generateNumber(foodData.meals.length);
+    let generatedIngList = generateIngredientsHTML(foodData.meals[randNumber]);
+    var recipeInstruction = generateSelectedRecipe(
+      foodData.meals[randNumber].strMeal,
+      foodData.meals[randNumber].strMealThumb,
+      foodData.meals[randNumber].strInstructions
+    );
+    $("#recipe-box").append(recipeInstruction);
+    $("#ingredients-list").append(generatedIngList);
+
+  })
+}
+
+$("#search-button").click(function(){
+  $("#first-page-welcome").empty();
+  $("#recipe-box").empty();
+  var userInput = $("#search-input").val();
+  $("#search-input").val(' ');
+  generateRecipeByInput(userInput);
+
+})
+// if (meals.includes(inputResponse)) {
+    //   alert("Item found in meals API!")
+    // } else if (meals === null) {
+    //   console.log(inputResponse)
+    // }
+    // else if (drinks.includes(inputResponse)){
+    //   alert("Item found in drinks API!")
+    // } else if (drinks === null){
+    //   console.log(inputResponse)
+    // } else {
+    //   alert("Please enter a valid recipe name!")
+    // }
