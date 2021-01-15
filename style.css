@@ -1,27 +1,59 @@
-#nav-bar  ,#sections{
-  background-color:rgb(47, 206, 126);
+#nav-bar {
+  background-color:rgb(24, 204, 236);
   color: black;
 }
-#search-button {
+img {
+  max-height: 445px;
+}
+.ingredients-list {
+  text-decoration-style: italic;
+  padding: 5px;
+}
+#search-button, .button.is-rounded.letter {
+  text-size-adjust: 20px;
+  border:none;
   color: black;
-  background-color:rgb(226, 230, 17);
+  background-color:rgb(17, 163, 230);
+}
+#food-recipe, #drink-recipe {
+  text-size-adjust: 20px;
+  border: none;
+  outline: none;
+  color: black;
+  margin-left: 10px;
+  background-color:rgb(17, 163, 230);
 }
 #search-for-recipe-input {
   border: hidden;
+
 }
 #body {
+  height: 100%;
   background-color: powderblue;
 }
-#container {
-  background-color: pink;
+ #recipe-box {
+   margin-left: 50px;
+   margin-right: 50px ;
+  background-color: powderblue;
+}
+#ingredients{
+  float: right;
 }
 #choice-image { width: 300px;
   height: 300px;
 }
-
 .name {
   font-style: bold;
 }
 .letter {
   align-self: center;
+}
+footer {
+  background-color: rgb(17, 163, 230);
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+}
+#recipe-img {
+  margin-left:20px;
 }
