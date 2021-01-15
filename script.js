@@ -1,4 +1,5 @@
 function generateLettersForFood() {
+  $("#first-page-welcome").empty();
   var html = " ";
   var c;
   for (var i = 65; 89 >= i; i++) {
@@ -11,11 +12,16 @@ function generateLettersForFood() {
       continue;
     }
     c = String.fromCharCode(i);
-    html += "<button class='letter'>" + c + "</button> <br>";
+    html += "<button class='button is-rounded letter'>" + c + "</button> <br>";
   }
+  var welcome= `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div>`
   document.getElementById("letters-area").innerHTML = html;
+  $("welcome-area").append(welcome);
+  
+
 }
 function generateLettersForCocktails() {
+  $("#first-page-welcome").empty();
   var html = " ";
   var c;
   for (var i = 65; 89 >= i; i++) {
@@ -27,16 +33,10 @@ function generateLettersForCocktails() {
       continue;
     }
     c = String.fromCharCode(i);
-    html += "<button class='letter'>" + c + "</button>";
+    html += "<button class='button is-rounded letter'>" + c + "</button>";
   }
   document.getElementById("letters-area").innerHTML = html;
 }
-
-// $(".letter").click(function (event) {
-//   var letter = event.target.innerText.toLowerCase();
-//   $("#recipe-box").empty();
-//   generateFood(letter);
-// });
 
 $("#food-recipe").click(function () {
   $("#recipe-box").empty();
@@ -69,7 +69,7 @@ function generateFood(userLetter) {
     console.log(data);
     var randNumber = generateNumber(data.meals.length);
     let generatedIngList = generateIngredientsHTML(data.meals[randNumber]);
-    var recipeInstruction = generateSelectedSection(
+    var recipeInstruction = generateSelectedRecipe(
       data.meals[randNumber].strMeal,
       data.meals[randNumber].strMealThumb,
       data.meals[randNumber].strInstructions
@@ -78,6 +78,7 @@ function generateFood(userLetter) {
     $("#ingredients-list").append(generatedIngList);
   });
 }
+
 function generateNumber(number) {
   return Math.floor(Math.random() * number);
 }
@@ -91,7 +92,7 @@ function generateIngredientsHTML(ingPath) {
     if (ingPath[ingredient] === "" || ingPath[ingredient] === null) {
       break;
     }
-    if (ingPath[measurement] === "") {
+    if (ingPath[measurement] === "" || ingPath[measurement] === null) {
       ingPath[measurement] = "To taste";
     }
     section = generateIngredientHTML(ingPath[ingredient], ingPath[measurement]);
@@ -101,23 +102,23 @@ function generateIngredientsHTML(ingPath) {
   return allHTML;
 }
 function generateIngredientHTML(ingredient, measurement) {
-  var recipeIngredients = "<li>" + ingredient + " : " + measurement + "</li>";
+  var recipeIngredients = "<li class='ingredients-list'>" + ingredient + " : " + measurement + "</li>";
   return recipeIngredients;
 }
 
-function generateSelectedSection(name, img, instructions) {
+function generateSelectedRecipe(name, img, instructions) {
   return `
-  <div id="recipe-title" class="column is-full is-centered">
-    <h2>${name}</h2>
+  <div id="recipe-title" class="columns is-centered is-full">
+    <h1>${name}</h1>
   </div>
   <div class="columns is-mobile">
-    <div class="column" id="img-area"><img id= "recipe-image" src="${img}"></div>
+    <div class="column" id="img-area"><img src="${img}"></div>
     <div class="column" id="ingredients">
-      <ul id= "ingredients-list"><h5 class ="cooking instruction"> Ingredients</h5><br>
+      <ul id= "ingredients-list"><h4 class ="cooking instruction" style="font-style:italic"> Ingredients</h4><br>
       </ul>
     </div>
   </div>
-  <div id="instructions" class="column-is-full"> <h5 class="cooking-instruction">Cooking Instruction:</h5> <br> ${instructions}</div>`;
+  <div id="instructions" class="column-is-full"> <h4 class="cooking-instruction" style="font-style:italic"> Cooking Instruction:</h4> <br> ${instructions}</div><br><br><br><br>`;
 }
 
 function generateCocktail(userLetter) {
@@ -130,7 +131,7 @@ function generateCocktail(userLetter) {
     console.log(obj);
     var randNumber = generateNumber(obj.drinks.length);
     let generatedIngList = generateIngredientsHTML(obj.drinks[randNumber]);
-    var recipeInstruction = generateSelectedSection(
+    var recipeInstruction = generateSelectedRecipe(
       obj.drinks[randNumber].strDrink,
       obj.drinks[randNumber].strDrinkThumb,
       obj.drinks[randNumber].strInstructions
