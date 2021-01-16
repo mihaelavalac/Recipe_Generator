@@ -1,3 +1,29 @@
+$("#food-recipe").click(function () {
+  $("#recipe-box").empty();
+  generateLettersForFood();
+  $(".letter").click(function (event) {
+    var letter = event.target.innerText.toLowerCase();
+    $("#recipe-box").empty();
+    generateFood(letter);
+  });
+});
+$("#drink-recipe").click(function () {
+  $("#recipe-box").empty();
+  generateLettersForCocktails();
+  $(".letter").click(function (event) {
+    var letter = event.target.innerText.toLowerCase();
+    $("#recipe-box").empty();
+    generateCocktail(letter);
+  });
+});
+$("#search-button").click(function () {
+  $("#first-page-welcome").empty();
+  $("#recipe-box").empty();
+  var userInput = $("#search-input").val();
+  $("#search-input").val(" ");
+  generateFoodByInput(userInput);
+  generateDrinkByInput(userInput);
+});
 function generateLettersForFood() {
   $("#first-page-welcome").empty();
   var html = " ";
@@ -14,50 +40,24 @@ function generateLettersForFood() {
     c = String.fromCharCode(i);
     html += "<button class='button is-rounded letter'>" + c + "</button> <br>";
   }
-  var welcome= `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`
+  var welcome = `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`;
   document.getElementById("letters-area").innerHTML = html;
   $("#welcome-area").append(welcome);
-  
-
-}
+};
 function generateLettersForCocktails() {
   $("#first-page-welcome").empty();
   var html = " ";
   var c;
   for (var i = 65; 89 >= i; i++) {
     // A-64, Z-90
-    if (
-      String.fromCharCode(i) === "X" ||
-      String.fromCharCode(i) === "U"
-    ) {
+    if (String.fromCharCode(i) === "X" || String.fromCharCode(i) === "U") {
       continue;
     }
     c = String.fromCharCode(i);
     html += "<button class='button is-rounded letter'>" + c + "</button>";
   }
   document.getElementById("letters-area").innerHTML = html;
-}
-
-$("#food-recipe").click(function () {
-  $("#recipe-box").empty();
-  generateLettersForFood();
-  $(".letter").click(function (event) {
-    var letter = event.target.innerText.toLowerCase();
-    $("#recipe-box").empty();
-    generateFood(letter);
-  });
-});
-
-$("#drink-recipe").click(function () {
-  $("#recipe-box").empty();
-  generateLettersForCocktails();
-  $(".letter").click(function (event) {
-    var letter = event.target.innerText.toLowerCase();
-    $("#recipe-box").empty();
-    generateCocktail(letter);
-  });
-});
-
+};
 function generateFood(userLetter) {
   var foodUrl =
     "http://www.themealdb.com/api/json/v1/1/search.php?f=" + userLetter;
@@ -66,7 +66,6 @@ function generateFood(userLetter) {
     url: foodUrl,
     method: "GET",
   }).then(function (data) {
-    console.log(data);
     var randNumber = generateNumber(data.meals.length);
     let generatedIngList = generateIngredientsHTML(data.meals[randNumber]);
     var recipeInstruction = generateSelectedRecipe(
@@ -77,11 +76,28 @@ function generateFood(userLetter) {
     $("#recipe-box").append(recipeInstruction);
     $("#ingredients-list").append(generatedIngList);
   });
-}
-
+};
+function generateCocktail(userLetter) {
+  var drinksUrl =
+    " http://www.thecocktaildb.com/api/json/v1/1/search.php?f=" + userLetter;
+  $.ajax({
+    url: drinksUrl,
+    method: "GET",
+  }).then(function (obj) {
+    var randNumber = generateNumber(obj.drinks.length);
+    let generatedIngList = generateIngredientsHTML(obj.drinks[randNumber]);
+    var recipeInstruction = generateSelectedRecipe(
+      obj.drinks[randNumber].strDrink,
+      obj.drinks[randNumber].strDrinkThumb,
+      obj.drinks[randNumber].strInstructions
+    );
+    $("#recipe-box").append(recipeInstruction);
+    $("#ingredients-list").append(generatedIngList);
+  });
+};
 function generateNumber(number) {
   return Math.floor(Math.random() * number);
-}
+};
 function generateIngredientsHTML(ingPath) {
   var allHTML = "";
   let section;
@@ -100,12 +116,16 @@ function generateIngredientsHTML(ingPath) {
     allHTML += section;
   }
   return allHTML;
-}
+};
 function generateIngredientHTML(ingredient, measurement) {
-  var recipeIngredients = "<li class='ingredients-list is-centered'>" + ingredient + " : " + measurement + "</li>";
+  var recipeIngredients =
+    "<li class='ingredients-list is-centered'>" +
+    ingredient +
+    " : " +
+    measurement +
+    "</li>";
   return recipeIngredients;
-}
-
+};
 function generateSelectedRecipe(name, img, instructions) {
   return `
   <div id="recipe-title" class="columns is-full is-centered">
@@ -120,72 +140,55 @@ function generateSelectedRecipe(name, img, instructions) {
     <div class="column is-mobile is-5" id="instructions"> <h4 class="cooking-instruction" style="font-style:italic"> Instruction </h4><br> ${instructions}</div>
   </div>
  `;
-}
-
-function generateCocktail(userLetter) {
-  var drinksUrl =
-    " http://www.thecocktaildb.com/api/json/v1/1/search.php?f=" + userLetter;
-  $.ajax({
-    url: drinksUrl,
-    method: "GET",
-  }).then(function (obj) {
-    console.log(obj);
-    var randNumber = generateNumber(obj.drinks.length);
-    let generatedIngList = generateIngredientsHTML(obj.drinks[randNumber]);
-    var recipeInstruction = generateSelectedRecipe(
-      obj.drinks[randNumber].strDrink,
-      obj.drinks[randNumber].strDrinkThumb,
-      obj.drinks[randNumber].strInstructions
-    );
-    $("#recipe-box").append(recipeInstruction);
-    $("#ingredients-list").append(generatedIngList);
-  });
-}
-
-function generateRecipeByInput (input) {
-  var foodInputUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s=" + input;
-  var drinkInputUrl = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" +input;
+};
+function generateFoodByInput(input) {
+  var foodInputUrl =
+    "https://www.themealdb.com/api/json/v1/1/search.php?s=" + input;
   $.ajax({
     url: foodInputUrl,
     method: "GET",
   }).then(function (foodData) {
     console.log(foodData);
-    $.ajax({
-      url: drinkInputUrl,
-      method: "GET"
-    }).then (function (inputResponse){
-      console.log(inputResponse);
-    }) 
-    var randNumber = generateNumber(foodData.meals.length);
-    let generatedIngList = generateIngredientsHTML(foodData.meals[randNumber]);
-    var recipeInstruction = generateSelectedRecipe(
-      foodData.meals[randNumber].strMeal,
-      foodData.meals[randNumber].strMealThumb,
-      foodData.meals[randNumber].strInstructions
-    );
-    $("#recipe-box").append(recipeInstruction);
-    $("#ingredients-list").append(generatedIngList);
+    if (foodData.meals === null) {
+      return;
+    } else {
+      var randNumber = generateNumber(foodData.meals.length);
+      let generatedIngList = generateIngredientsHTML(foodData.meals[randNumber]);
+      var recipeInstruction = generateSelectedRecipe(
+        foodData.meals[randNumber].strMeal,
+        foodData.meals[randNumber].strMealThumb,
+        foodData.meals[randNumber].strInstructions
+      );
+      $("#recipe-box").append(recipeInstruction);
+      $("#ingredients-list").append(generatedIngList);
+    }
+  }).catch(function (error) {
+    console.log(error);
+  });
+};
+function generateDrinkByInput(input) {
+  var drinkInputUrl =
+    "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + input;
+  $.ajax({
+    url: drinkInputUrl,
+    method: "GET",
+  }).then(function (inputResponse) {
+    console.log(inputResponse);
+    if (inputResponse.drinks === null) {
+      return;
+    } else {
+      var randNumber = generateNumber(inputResponse.drinks.length);
+      let generatedIngList = generateIngredientsHTML(inputResponse.drinks[randNumber]);
+      var recipeInstruction = generateSelectedRecipe(
+        inputResponse.drinks[randNumber].strDrink,
+        inputResponse.drinks[randNumber].strDrinkThumb,
+        inputResponse.drinks[randNumber].strInstructions
+        );
+      $("#recipe-box").append(recipeInstruction);
+      $("#ingredients-list").append(generatedIngList);
+    }
+  }).catch(function (error) {
+    console.log(error);
+  });
 
-  })
-}
-
-$("#search-button").click(function(){
-  $("#first-page-welcome").empty();
-  $("#recipe-box").empty();
-  var userInput = $("#search-input").val();
-  $("#search-input").val(' ');
-  generateRecipeByInput(userInput);
-
-})
-// if (meals.includes(inputResponse)) {
-    //   alert("Item found in meals API!")
-    // } else if (meals === null) {
-    //   console.log(inputResponse)
-    // }
-    // else if (drinks.includes(inputResponse)){
-    //   alert("Item found in drinks API!")
-    // } else if (drinks === null){
-    //   console.log(inputResponse)
-    // } else {
-    //   alert("Please enter a valid recipe name!")
-    // }
+};
