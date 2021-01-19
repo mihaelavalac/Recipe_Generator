@@ -1,16 +1,22 @@
 $("#food-recipe").click(function () {
+  $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForFood();
-  $(".letter").click(function (event) {
+  generateWelcomeFoodHTML();
+  $(".letter").click(function (event) { 
+    $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
     $("#recipe-box").empty();
     generateFood(letter);
   });
 });
 $("#drink-recipe").click(function () {
+  $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForCocktails();
+  generateWelcomeDrinkHTML ();
   $(".letter").click(function (event) {
+    $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
     $("#recipe-box").empty();
     generateCocktail(letter);
@@ -126,6 +132,22 @@ function generateIngredientHTML(ingredient, measurement) {
     "</li>";
   return recipeIngredients;
 };
+
+function generateWelcomeFoodHTML () {
+  var content = `<div id="welcome-food-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/food.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random meal recipe!</h3></div>`
+  $("#welcome-box").append(content);
+  return content;
+  
+}
+
+function generateWelcomeDrinkHTML () {
+  var content = `<div id="welcome-drink-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/cocktail.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random cocktail recipe!</h3></div>`
+  $("#welcome-box").append(content);
+  return content;
+  
+}
+
+
 function generateSelectedRecipe(name, img, instructions) {
   return `
   <div id="recipe-title" class="columns is-full is-centered">
@@ -190,5 +212,17 @@ function generateDrinkByInput(input) {
   }).catch(function (error) {
     console.log(error);
   });
+
+};
+
+function respondToFoodInput () {
+
+};
+
+function respondToDrinkInput (){
+
+};
+
+function generateFoodOrDrink () {
 
 };
