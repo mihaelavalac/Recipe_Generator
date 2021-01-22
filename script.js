@@ -1,20 +1,25 @@
+// When the food-recipe button is clicked, on the screen is generated s list of letters for food choices and a welcome message!
 $("#food-recipe").click(function () {
   $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForFood();
   generateWelcomeFoodHTML();
-  $(".letter").click(function (event) { 
+  // when a letter is clicked, a random  food recipe is generated.
+  $(".letter").click(function (event) {
     $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
     $("#recipe-box").empty();
     generateFood(letter);
   });
 });
+
+// When the drink-recipe button is clicked, on the screen is generated s list of letters for drinks choices and a welcome message!
 $("#drink-recipe").click(function () {
   $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForCocktails();
-  generateWelcomeDrinkHTML ();
+  generateWelcomeDrinkHTML();
+  //when a letter is clicked, a random drink recipe is generated. 
   $(".letter").click(function (event) {
     $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
@@ -22,13 +27,18 @@ $("#drink-recipe").click(function () {
     generateCocktail(letter);
   });
 });
+//When the user is writing a food/drink in the input field, the search button reacts ang generate a food or a drink on the screen.
 $("#search-button").click(function () {
+  $("#error-box").empty();
   $("#first-page-welcome").empty();
   $("#recipe-box").empty();
   var userInput = $("#search-input").val();
   $("#search-input").val(" ");
-  generateFoodOrDrink(userInput);
+  generateFoodByInput(userInput);
+  //generateDrinkByInput(userInput);
 });
+
+//This function generates letters for food selections.
 function generateLettersForFood() {
   $("#first-page-welcome").empty();
   var html = " ";
@@ -48,7 +58,9 @@ function generateLettersForFood() {
   var welcome = `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`;
   document.getElementById("letters-area").innerHTML = html;
   $("#welcome-area").append(welcome);
-};
+}
+
+//This function generates letters for drink selections.
 function generateLettersForCocktails() {
   $("#first-page-welcome").empty();
   var html = " ";
@@ -62,7 +74,9 @@ function generateLettersForCocktails() {
     html += "<button class='button is-rounded letter'>" + c + "</button>";
   }
   document.getElementById("letters-area").innerHTML = html;
-};
+}
+
+//This function generates foods recipe.
 function generateFood(userLetter) {
   var foodUrl =
     "http://www.themealdb.com/api/json/v1/1/search.php?f=" + userLetter;
@@ -81,7 +95,9 @@ function generateFood(userLetter) {
     $("#recipe-box").append(recipeInstruction);
     $("#ingredients-list").append(generatedIngList);
   });
-};
+}
+
+//This function generates drinks recipe.
 function generateCocktail(userLetter) {
   var drinksUrl =
     " http://www.thecocktaildb.com/api/json/v1/1/search.php?f=" + userLetter;
@@ -99,29 +115,32 @@ function generateCocktail(userLetter) {
     $("#recipe-box").append(recipeInstruction);
     $("#ingredients-list").append(generatedIngList);
   });
-};
+}
+
+//This function generate a random number(a random item from ajax return).
 function generateNumber(number) {
   return Math.floor(Math.random() * number);
-};
+}
+
+//This function generates ingredients and measures for the picked recipe. 
 function generateIngredientsHTML(ingPath) {
   var allHTML = "";
   let section;
   for (let i = 1; i < 15; i++) {
     var ingredient = "strIngredient" + i;
     var measurement = "strMeasure" + i;
-
     if (ingPath[ingredient] === "" || ingPath[ingredient] === null) {
       break;
     }
-    if (ingPath[measurement] === "" || ingPath[measurement] === null) {
-      ingPath[measurement] = "To taste";
+    if (ingPath[measurement] === "" || ingPath[measurement] === null);{
+    ingPath[measurement] = "To taste";
     }
-    section = generateIngredientHTML(ingPath[ingredient], ingPath[measurement]);
-
-    allHTML += section;
-  }
+  section = generateIngredientHTML(ingPath[ingredient], ingPath[measurement]);
+  allHTML += section;
+  } 
   return allHTML;
-};
+}
+// This function generates ingredients in for of list. 
 function generateIngredientHTML(ingredient, measurement) {
   var recipeIngredients =
     "<li class='ingredients-list is-centered'>" +
@@ -130,23 +149,22 @@ function generateIngredientHTML(ingredient, measurement) {
     measurement +
     "</li>";
   return recipeIngredients;
-};
-
-function generateWelcomeFoodHTML () {
-  var content = `<div id="welcome-food-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/food.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random meal recipe!</h3></div>`
+}
+//This function generates welcome message after the food-recipe button is clicked.
+function generateWelcomeFoodHTML() {
+  var content = `<div id="welcome-food-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/food.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random meal recipe!</h3></div>`;
   $("#welcome-box").append(content);
   return content;
-  
 }
 
-function generateWelcomeDrinkHTML () {
-  var content = `<div id="welcome-drink-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/cocktail.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random cocktail recipe!</h3></div>`
+//This function generates welcome message after the drink-recipe button is generated.
+function generateWelcomeDrinkHTML() {
+  var content = `<div id="welcome-drink-area" class="container"><img id="welcome-img" class="columns is-centered" src="img/cocktail.png"><br> <h3 class="columns is-centered">Click one of the letters above to generate a random cocktail recipe!</h3></div>`;
   $("#welcome-box").append(content);
   return content;
-  
 }
 
-
+//This function generates the name, image, and instruction of the picked recipe.
 function generateSelectedRecipe(name, img, instructions) {
   return `
   <div id="recipe-title" class="columns is-full is-centered">
@@ -162,24 +180,19 @@ function generateSelectedRecipe(name, img, instructions) {
     <div class="column is-mobile is-5" id="instructions"> <h4 class="cooking-instruction" style="font-style:italic"> Instruction </h4><br> ${instructions}</div>
   </div>
  `;
-};
+}
+
+//This function generates a food recipe by user input.
 function generateFoodByInput(input) {
   var foodInputUrl =
     "https://www.themealdb.com/api/json/v1/1/search.php?s=" + input;
   $.ajax({
     url: foodInputUrl,
     method: "GET",
-  })
-    .then(respondToFoodInput(foodData))
-    .catch(function (error) {
-      console.log(error);
-    });
-};
-
-function respondToFoodInput (foodData) {
-    console.log(foodData);
+  }).then(function (foodData) {
+    console.log(foodData)
     if (foodData.meals === null) {
-      return;
+      generateDrinkByInput();
     } else {
       var randNumber = generateNumber(foodData.meals.length);
       let generatedIngList = generateIngredientsHTML(foodData.meals[randNumber]);
@@ -191,27 +204,22 @@ function respondToFoodInput (foodData) {
       $("#recipe-box").append(recipeInstruction);
       $("#ingredients-list").append(generatedIngList);
     }
-
+  }).catch(function (error) {
+    console.log(error);
+  });
 };
 
+//This function generates drink recipe by user input. 
 function generateDrinkByInput(input) {
   var drinkInputUrl =
     "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + input;
   $.ajax({
     url: drinkInputUrl,
     method: "GET",
-  })
-  .then(respondToDrinkInput(inputResponse))
-  .catch(function (error) {
-    console.log(error);
-  });
-};
-
-
-function respondToDrinkInput (inputResponse) {
-  console.log(inputResponse);
+  }).then(function (inputResponse) {
+    console.log(inputResponse);
     if (inputResponse.drinks === null) {
-      return;
+     // generateUndefinedInput();
     } else {
       var randNumber = generateNumber(inputResponse.drinks.length);
       let generatedIngList = generateIngredientsHTML(inputResponse.drinks[randNumber]);
@@ -223,10 +231,14 @@ function respondToDrinkInput (inputResponse) {
       $("#recipe-box").append(recipeInstruction);
       $("#ingredients-list").append(generatedIngList);
     }
-  };
+  }).catch(function (error) {
+    console.log(error);
+  });
+}
 
-function generateFoodOrDrink (input) {
-  if ((respondToDrinkInput(input) !== null) && (respondToFoodInput(input) !== null)) {
-    respondToFoodInput(input);
-  }
-};
+//This function generates a sorry message if the user input is not found under any  recipes. 
+function generateUndefinedInput() {
+  var notFound = `<div id="no-recipe" class="container"><img id="error-img" class="columns is-centered" src="img/sorry.png"><br> <h3 class="columns is-centered"> We couldn't find a recipe with this name! Please try another recipe...</h3></div>`;
+  $("#error-box").append(notFound);
+  return notFound;
+}
