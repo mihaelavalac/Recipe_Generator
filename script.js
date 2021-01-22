@@ -190,7 +190,6 @@ function generateFoodByInput(input) {
     url: foodInputUrl,
     method: "GET",
   }).then(function (foodData) {
-    console.log(foodData)
     if (foodData.meals === null) {
       generateDrinkByInput();
     } else {
@@ -219,7 +218,8 @@ function generateDrinkByInput(input) {
   }).then(function (inputResponse) {
     console.log(inputResponse);
     if (inputResponse.drinks === null) {
-     // generateUndefinedInput();
+      generateUndefinedInput();
+      return;
     } else {
       var randNumber = generateNumber(inputResponse.drinks.length);
       let generatedIngList = generateIngredientsHTML(inputResponse.drinks[randNumber]);
