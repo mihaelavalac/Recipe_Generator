@@ -1,5 +1,6 @@
 // When the food-recipe button is clicked, on the screen is generated s list of letters for food choices and a welcome message!
 $("#food-recipe").click(function () {
+  $("#no-recipe-found").empty();
   $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForFood();
@@ -15,6 +16,7 @@ $("#food-recipe").click(function () {
 
 // When the drink-recipe button is clicked, on the screen is generated s list of letters for drinks choices and a welcome message!
 $("#drink-recipe").click(function () {
+  $("#no-recipe-found").empty();
   $("#welcome-box").empty();
   $("#recipe-box").empty();
   generateLettersForCocktails();
@@ -29,6 +31,7 @@ $("#drink-recipe").click(function () {
 });
 //When the user is writing a food/drink in the input field, the search button reacts ang generate a food or a drink on the screen.
 $("#search-button").click(function () {
+  $("#no-recipe-found").empty();
   $("#error-box").empty();
   $("#first-page-welcome").empty();
   $("#recipe-box").empty();
@@ -236,9 +239,10 @@ function generateDrinkByInput(input) {
   });
 }
 
+
 //This function generates a sorry message if the user input is not found under any  recipes. 
 function generateUndefinedInput() {
-  var notFound = `<div id="no-recipe" class="container"><img id="error-img" class="columns is-centered" src="img/sorry.png"><br> <h3 class="columns is-centered"> We couldn't find a recipe with this name! Please try another recipe...</h3></div>`;
+  var notFound = `<div id="no-recipe-found" class="container"><img id="error-img" class="columns is-centered" src="img/sorry.png"><br> <h3 class="columns is-centered"> We couldn't find a recipe with this name! Please try another recipe...</h3></div>`;
   $("#error-box").append(notFound);
   return notFound;
 }
