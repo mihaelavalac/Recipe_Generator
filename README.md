@@ -8,6 +8,16 @@ The cocktail DB - https://www.thecocktaildb.com/api.php
 
 ## Website Layout 
 
-When the user access the page for the first time, on the screen display a welcome Image!
+When the user access the page for the first time, on the screen display a Welcome Image and an instructive message!
 
 ![image](./img/welcome.png)
+
+If the user chose to generate a random recipe, the screen displays a string of letters from whish the user should chose the one with which the name of the recipe starts and a image that represents the category of recipe.
+
+For food-recipes:
+
+![image](./img/food-button.png)
+
+For cocktail-recipe:
+
+![image](./img/drinks-button.png)
