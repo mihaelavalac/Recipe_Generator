@@ -21,3 +21,21 @@ For food-recipes:
 For cocktail-recipe:
 
 ![image](./img/drinks-button.png)
+
+When the user select the desired letter-button, the screen displays a random recipe from the selection. 
+
+Example for the food selection for letters "C", "L" and "R" :
+
+![image](./img/meal1.png)
+
+![image](./img/meal2.png)
+
+![image](./img/meal3.png)
+
+Example for the cocktails selection for letters "A", "E" and "Q" :
+
+![image](./img/drink1.png)
+
+![image](./img/drink2.png)
+
+![image](./img/drink3.png)
