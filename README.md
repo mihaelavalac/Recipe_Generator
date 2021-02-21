@@ -56,4 +56,4 @@ If the user types in the search box an invalid input:
 
 The program will generate an unavailable recipe message:
 
-![image](./img/sorry.png)
+![image](./img/sorry-page copy.png)

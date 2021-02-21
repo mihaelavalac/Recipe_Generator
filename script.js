@@ -7,6 +7,7 @@ $("#food-recipe").click(function () {
   generateWelcomeFoodHTML();
   // when a letter is clicked, a random  food recipe is generated.
   $(".letter").click(function (event) {
+    $("#no-recipe-found").empty();
     $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
     $("#recipe-box").empty();
@@ -23,6 +24,7 @@ $("#drink-recipe").click(function () {
   generateWelcomeDrinkHTML();
   //when a letter is clicked, a random drink recipe is generated. 
   $(".letter").click(function (event) {
+    $("#no-recipe-found").empty();
     $("#welcome-box").empty();
     var letter = event.target.innerText.toLowerCase();
     $("#recipe-box").empty();
@@ -58,7 +60,7 @@ function generateLettersForFood() {
     c = String.fromCharCode(i);
     html += "<button class='button is-rounded letter'>" + c + "</button> <br>";
   }
-  var welcome = `  <div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`;
+  var welcome = `<div id="welcome-area"><img class="is-centered" src="img/food.png"><br> <h3>Click one of the letters above to generate a random food recipe!</h3></div><br>`;
   document.getElementById("letters-area").innerHTML = html;
   $("#welcome-area").append(welcome);
 }
@@ -82,7 +84,7 @@ function generateLettersForCocktails() {
 //This function generates foods recipe.
 function generateFood(userLetter) {
   var foodUrl =
-    "http://www.themealdb.com/api/json/v1/1/search.php?f=" + userLetter;
+    "https://www.themealdb.com/api/json/v1/1/search.php?f=" + userLetter;
 
   $.ajax({
     url: foodUrl,
@@ -103,7 +105,7 @@ function generateFood(userLetter) {
 //This function generates drinks recipe.
 function generateCocktail(userLetter) {
   var drinksUrl =
-    " http://www.thecocktaildb.com/api/json/v1/1/search.php?f=" + userLetter;
+    " https://www.thecocktaildb.com/api/json/v1/1/search.php?f=" + userLetter;
   $.ajax({
     url: drinksUrl,
     method: "GET",
