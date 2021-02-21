@@ -24,7 +24,7 @@ If the user chose to generate a random recipe, the screen displays a string of l
 
 When the user select the desired letter-button, the screen displays a random recipe from the selection. 
 
-### Example for the food selection for letters "C", "L" and "R" :
+### Example for food recipe selection for letters "C", "L" and "R" :
 
 ![image](./img/meal1.png)
 
@@ -32,10 +32,28 @@ When the user select the desired letter-button, the screen displays a random rec
 
 ![image](./img/meal3.png)
 
-### Example for the cocktails selection for letters "A", "E" and "Q" :
+### Example for cocktails recipe selection for letters "A", "E" and "Q" :
 
 ![image](./img/drink1.png)
 
 ![image](./img/drink2.png)
 
 ![image](./img/drink3.png)
+
+Users also can type in the Search box the name of the recipe they are looking for.
+
+If the user is searching for a pizza recipe: 
+
+![image](./img/pizza-search.png)
+
+The program will generate a random pizza recipe.
+
+![image](./img/pizza.png)
+
+If the user types in the search box an invalid input:
+
+![image](./img/invalid.png)
+
+The program will generate an unavailable recipe message:
+
+![image](./img/sorry.png)
