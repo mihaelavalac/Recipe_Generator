@@ -244,7 +244,7 @@ function generateDrinkByInput(input) {
 
 //This function generates a sorry message if the user input is not found under any  recipes. 
 function generateUndefinedInput() {
-  var notFound = `<div id="no-recipe-found" class="container"><img id="error-img" class="columns is-centered" src="img/sorry.png"><br> <h3 class="columns is-centered"> We couldn't find a recipe with this name! Please try another recipe...</h3></div>`;
+  var notFound = `<div id="no-recipe-found" class="container"><img id="error-img" class="columns is-centered" src="img/sorry.png"><br> <h3 class="columns is-centered"> We couldn't find a recipe with this name! Please type another recipe name or click one of the letters above to get a random recipe...</h3></div>`;
   $("#error-box").append(notFound);
   return notFound;
 }
