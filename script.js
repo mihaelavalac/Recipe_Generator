@@ -95,7 +95,7 @@ function generateFood(userLetter) {
     var recipeInstruction = generateSelectedRecipe(
       data.meals[randNumber].strMeal,
       data.meals[randNumber].strMealThumb,
-      data.meals[randNumber].strInstructions
+      data.meals[randNumber].strInstructions,
     );
     $("#recipe-box").append(recipeInstruction);
     $("#ingredients-list").append(generatedIngList);
@@ -134,18 +134,18 @@ function generateIngredientsHTML(ingPath) {
   for (let i = 1; i < 15; i++) {
     var ingredient = "strIngredient" + i;
     var measurement = "strMeasure" + i;
+    if (ingPath[measurement] === "" || ingPath[measurement] === null) {
+    ingPath[measurement] = "To taste";
+    } 
     if (ingPath[ingredient] === "" || ingPath[ingredient] === null) {
       break;
-    }
-    if (ingPath[measurement] === "" || ingPath[measurement] === null);{
-    ingPath[measurement] = "To taste";
     }
   section = generateIngredientHTML(ingPath[ingredient], ingPath[measurement]);
   allHTML += section;
   } 
   return allHTML;
 }
-// This function generates ingredients in for of list. 
+// This function generates ingredients in form of list. 
 function generateIngredientHTML(ingredient, measurement) {
   var recipeIngredients =
     "<li class='ingredients-list is-centered'>" +
