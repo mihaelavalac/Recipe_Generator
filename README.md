@@ -60,4 +60,4 @@ The program will generate an unavailable recipe message:
 
 ## Deployment Link 
 
-https://mihaelavalac.github.io/Project-1/
+[Recipe_Generator](https://mihaelavalac.github.io/Project-1/)
